@@ -57,7 +57,7 @@ if not context_manager.has_current_workflow():
 top_level_unique_values_dict = {
     "7ef85a2b-ddd3-4a25-8a39-c27d7b863da7": pickle.loads(b"\x80\x04\x89."),
     "ed87d98d-b733-4643-b4ce-59de111463ac": pickle.loads(
-        b"\x80\x04\x95\xd7\x00\x00\x00\x00\x00\x00\x00\x8c\xd3You can find your safetensor output file at: /tmp/NodeGroup_AWS_Deadline_Cloud_Library_packaged_flow_deadline_bundle_b39ejg7q/output/694d044bd3e04acdb467f5540857ffa5/dataSet_CHICKAPIGLET/my_flux_lora.safetensors\x94."
+        b"\x80\x04\x95\xde\x00\x00\x00\x00\x00\x00\x00\x8c\xdaYou can find your safetensor output file at: /tmp/NodeGroup_AWS_Deadline_Cloud_Library_packaged_flow_deadline_bundle_b39ejg7q/output/694d044bd3e04acdb467f5540857ffa5/dataSet_CHICKAPIGLET/my_flux2_klein_lora.safetensors\x94."
     ),
     "64b02f98-5bd0-4096-b882-a4af29890c3b": pickle.loads(
         b"\x80\x04\x95/\x00\x00\x00\x00\x00\x00\x00\x8c+You can find your safetensor output file at\x94."
@@ -76,16 +76,16 @@ top_level_unique_values_dict = {
         b"\x80\x04\x95\xe6\x03\x00\x00\x00\x00\x00\x00X\xdf\x03\x00\x00# Overview\n\nThis workflow runs a LoRA Training process on AWS Deadline Cloud and returns the generated safetensors file.\n\nClick the 'Run Workflow' button to kick off the training process!\n\n## Libraries\n\n* Griptape Nodes Standard Library: https://github.com/griptape-ai/griptape-nodes-library-standard\n* LoRA Training Library: https://github.com/griptape-ai/griptape-nodes-lora-training-library\n  * Note: Register the Library with the `griptape-nodes-library-cuda129.json` file for compatibility with Deadline\n* AWS Deadline Cloud Library: https://github.com/griptape-ai/griptape-nodes-library-deadline-cloud\n\n## NodeGroup\n\nAll of the Nodes in the below Subflow Node Group will be packaged and submitted to AWS Deadline Cloud as a Job. This will happen when the workflow runs. The output from the Job will include a safetensors file if the LoRA training was successful. The end of this workflow will display the file path location where the safetensors file was downloaded to on your machine.\x94."
     ),
     "44865051-a77b-43db-8a32-e0e73edb3ef3": pickle.loads(
-        b"\x80\x04\x95\xa4\x00\x00\x00\x00\x00\x00\x00]\x94(\x8c\x8d/tmp/NodeGroup_AWS_Deadline_Cloud_Library_packaged_flow_deadline_bundle_l00kpxc6/output/4a193e3b099f4b5ba070389f6fa2ac10/dataSet_CHICKAPIGLET\x94\x8c\x0cmy_flux_lora\x94e."
+        b"\x80\x04\x95\xab\x00\x00\x00\x00\x00\x00\x00]\x94(\x8c\x8d/tmp/NodeGroup_AWS_Deadline_Cloud_Library_packaged_flow_deadline_bundle_l00kpxc6/output/4a193e3b099f4b5ba070389f6fa2ac10/dataSet_CHICKAPIGLET\x94\x8c\x13my_flux2_klein_lora\x94e."
     ),
     "565f4882-aafc-4b6e-901c-bba007ebdf91": pickle.loads(
         b"\x80\x04\x95\x91\x00\x00\x00\x00\x00\x00\x00\x8c\x8d/tmp/NodeGroup_AWS_Deadline_Cloud_Library_packaged_flow_deadline_bundle_l00kpxc6/output/4a193e3b099f4b5ba070389f6fa2ac10/dataSet_CHICKAPIGLET\x94."
     ),
     "3cf9a784-62c0-431e-a32a-ca2b2ea92f27": pickle.loads(
-        b"\x80\x04\x95\x10\x00\x00\x00\x00\x00\x00\x00\x8c\x0cmy_flux_lora\x94."
+        b"\x80\x04\x95\x17\x00\x00\x00\x00\x00\x00\x00\x8c\x13my_flux2_klein_lora\x94."
     ),
     "0455375a-ccf7-4990-a6d6-7c81fa17e363": pickle.loads(
-        b"\x80\x04\x95\x9e\x00\x00\x00\x00\x00\x00\x00\x8c\x9a/tmp/NodeGroup_AWS_Deadline_Cloud_Library_packaged_flow_deadline_bundle_l00kpxc6/output/4a193e3b099f4b5ba070389f6fa2ac10/dataSet_CHICKAPIGLET/my_flux_lora\x94."
+        b"\x80\x04\x95\xa5\x00\x00\x00\x00\x00\x00\x00\x8c\xa1/tmp/NodeGroup_AWS_Deadline_Cloud_Library_packaged_flow_deadline_bundle_l00kpxc6/output/4a193e3b099f4b5ba070389f6fa2ac10/dataSet_CHICKAPIGLET/my_flux2_klein_lora\x94."
     ),
     "1baea03d-529b-4166-afba-8c452e6f7f3b": pickle.loads(
         b"\x80\x04\x95\x1e\x00\x00\x00\x00\x00\x00\x00\x8c\x1aAWS Deadline Cloud Library\x94."
@@ -107,7 +107,7 @@ top_level_unique_values_dict = {
         b"\x80\x04\x95\x0f\x00\x00\x00\x00\x00\x00\x00\x8c\x0bconda-forge\x94."
     ),
     "b95f1dda-0795-4cdb-9837-eaf9a8f5cf3f": pickle.loads(
-        b"\x80\x04\x95\x0f\x00\x00\x00\x00\x00\x00\x00\x8c\x0bpython=3.12\x94."
+        b"\x80\x04\x95\x17\x00\x00\x00\x00\x00\x00\x00\x8c\x13python=3.12 pip git\x94."
     ),
     "df10d7d0-dd1a-44e1-bcb8-b89f674b39fb": pickle.loads(
         b"\x80\x04\x95\x15\x00\x00\x00\x00\x00\x00\x00}\x94(\x8c\x03min\x94K\x01\x8c\x03max\x94K\x02u."
@@ -151,27 +151,27 @@ top_level_unique_values_dict = {
         b"\x80\x04\x95\x1b\x00\x00\x00\x00\x00\x00\x00\x8c\x17Control Input Selection\x94."
     ),
     "442b70f4-0722-4e13-9726-89378c0d3856": pickle.loads(
-        b"\x80\x04\x95\n\x00\x00\x00\x00\x00\x00\x00\x8c\x06FLUX.1\x94."
+        b"\x80\x04\x95\x10\x00\x00\x00\x00\x00\x00\x00\x8c\x0cFLUX.2 Klein\x94."
     ),
     "5ae39216-cf12-486d-9251-d26f629b9f2e": pickle.loads(
-        b"\x80\x04\x95$\x00\x00\x00\x00\x00\x00\x00\x8c black-forest-labs/FLUX.1-schnell\x94."
+        b"\x80\x04\x95*\x00\x00\x00\x00\x00\x00\x00\x8c&black-forest-labs/FLUX.2-klein-base-4B\x94."
     ),
     "708c79f0-1b91-428d-ad4b-605adb1a2eb3": pickle.loads(
-        b"\x80\x04\x95 \x00\x00\x00\x00\x00\x00\x00\x8c\x1cblack-forest-labs/FLUX.1-dev\x94."
+        b"\x80\x04\x95%\x00\x00\x00\x00\x00\x00\x00\x8c!black-forest-labs/FLUX.2-klein-4B\x94."
     ),
     "cdf4a83a-8809-419d-8870-a6d9ea0855ff": pickle.loads(
-        b"\x80\x04\x95\x10\x00\x00\x00\x00\x00\x00\x00\x8c\x0cmy_flux_lora\x94."
+        b"\x80\x04\x95\x17\x00\x00\x00\x00\x00\x00\x00\x8c\x13my_flux2_klein_lora\x94."
     ),
     "851c044b-adeb-4f7a-9aae-9af57ae5060d": pickle.loads(
-        b"\x80\x04\x95\n\x00\x00\x00\x00\x00\x00\x00G?J6\xe2\xeb\x1cC-."
+        b"\x80\x04\x95\n\x00\x00\x00\x00\x00\x00\x00G?\x1a6\xe2\xeb\x1cC-."
     ),
-    "67745344-ebf8-411b-a3a9-0304cca3bdaa": pickle.loads(b"\x80\x04K\x08."),
-    "3af14b1f-483b-42e8-bae0-f2e2da803c9c": pickle.loads(b"\x80\x04K\x10."),
-    "f9ae4817-4699-4795-891c-98c7b00bf322": pickle.loads(b"\x80\x04K\x04."),
+    "67745344-ebf8-411b-a3a9-0304cca3bdaa": pickle.loads(b"\x80\x04\x95\x04\x00\x00\x00\x00\x00\x00\x00M\xf4\x01."),
+    "3af14b1f-483b-42e8-bae0-f2e2da803c9c": pickle.loads(b"\x80\x04\x95\x04\x00\x00\x00\x00\x00\x00\x00M\xdc\x05."),
+    "f9ae4817-4699-4795-891c-98c7b00bf322": pickle.loads(b"\x80\x04K\x10."),
     "70ff63ff-ccda-414a-a4f1-2f88b59cf1bd": pickle.loads(
         b"\x80\x04\x95\x08\x00\x00\x00\x00\x00\x00\x00\x8c\x04bf16\x94."
     ),
-    "5886642b-ec99-4f5f-ac6e-29ed5287166a": pickle.loads(b"\x80\x04K\x02."),
+    "5886642b-ec99-4f5f-ac6e-29ed5287166a": pickle.loads(b"\x80\x04K\n."),
     "2403920b-dd5d-43f3-a29b-949ce23b3eab": pickle.loads(b"\x80\x04\x89."),
     "92794cb3-1452-4477-b790-166ee0a93704": pickle.loads(b"\x80\x04K*."),
     "7b7eea6b-442c-4b15-9a93-29b23a3d0fd7": pickle.loads(
@@ -1000,343 +1000,120 @@ with GriptapeNodes.ContextManager().flow(flow0_name):
                     parameter_name="model_family",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["442b70f4-0722-4e13-9726-89378c0d3856"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
-                    parameter_name="model_family",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["442b70f4-0722-4e13-9726-89378c0d3856"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="flux_model",
+                    parameter_name="flux2_klein_model",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["5ae39216-cf12-486d-9251-d26f629b9f2e"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="flux_model",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["708c79f0-1b91-428d-ad4b-605adb1a2eb3"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="dataset_config_path",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["658fdcfd-2239-4479-8d56-50e9b4df08b8"],
-                    initial_setup=True,
-                    is_output=False,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="dataset_config_path",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["658fdcfd-2239-4479-8d56-50e9b4df08b8"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="output_dir",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["1de7ea58-3cc4-4920-9fce-e1249cf3275c"],
-                    initial_setup=True,
-                    is_output=False,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="output_dir",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["1de7ea58-3cc4-4920-9fce-e1249cf3275c"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
                     parameter_name="output_name",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["cdf4a83a-8809-419d-8870-a6d9ea0855ff"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="output_name",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["cdf4a83a-8809-419d-8870-a6d9ea0855ff"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
                     parameter_name="learning_rate",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["851c044b-adeb-4f7a-9aae-9af57ae5060d"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
-                    parameter_name="learning_rate",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["851c044b-adeb-4f7a-9aae-9af57ae5060d"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="save_every_n_epochs",
+                    parameter_name="save_every_n_steps",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["67745344-ebf8-411b-a3a9-0304cca3bdaa"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
-                    parameter_name="save_every_n_epochs",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["67745344-ebf8-411b-a3a9-0304cca3bdaa"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="max_train_epochs",
+                    parameter_name="max_train_steps",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["3af14b1f-483b-42e8-bae0-f2e2da803c9c"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="max_train_epochs",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["3af14b1f-483b-42e8-bae0-f2e2da803c9c"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
                     parameter_name="network_dim",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["f9ae4817-4699-4795-891c-98c7b00bf322"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="network_dim",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["f9ae4817-4699-4795-891c-98c7b00bf322"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
                     parameter_name="network_alpha",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="network_alpha",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="full_bf16",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=False,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="full_bf16",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
                     parameter_name="mixed_precision",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["70ff63ff-ccda-414a-a4f1-2f88b59cf1bd"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
-                    parameter_name="mixed_precision",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["70ff63ff-ccda-414a-a4f1-2f88b59cf1bd"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="save_precision",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["70ff63ff-ccda-414a-a4f1-2f88b59cf1bd"],
-                    initial_setup=True,
-                    is_output=False,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="save_precision",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["70ff63ff-ccda-414a-a4f1-2f88b59cf1bd"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="guidance_scale",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=False,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="guidance_scale",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="fp8_base",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=False,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="fp8_base",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="highvram",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=False,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="highvram",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["c64e4ca1-8d68-4809-9ff4-545f74ab4634"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="max_data_loader_n_workers",
+                    parameter_name="num_repeats",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["5886642b-ec99-4f5f-ac6e-29ed5287166a"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="max_data_loader_n_workers",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["5886642b-ec99-4f5f-ac6e-29ed5287166a"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
                     parameter_name="randomize_seed",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["2403920b-dd5d-43f3-a29b-949ce23b3eab"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="randomize_seed",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["2403920b-dd5d-43f3-a29b-949ce23b3eab"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
                     parameter_name="seed",
                     node_name=node8_name,
                     value=top_level_unique_values_dict["92794cb3-1452-4477-b790-166ee0a93704"],
-                    initial_setup=True,
+                    initial_setup=False,
                     is_output=False,
                 )
             )
-            GriptapeNodes.handle_request(
-                SetParameterValueRequest(
-                    parameter_name="seed",
-                    node_name=node8_name,
-                    value=top_level_unique_values_dict["92794cb3-1452-4477-b790-166ee0a93704"],
-                    initial_setup=True,
-                    is_output=True,
-                )
-            )
+
             GriptapeNodes.handle_request(
                 SetParameterValueRequest(
                     parameter_name="was_successful",
@@ -1597,78 +1374,6 @@ with GriptapeNodes.ContextManager().flow(flow0_name):
             source_parameter_name="exec_in",
             target_node_name=node6_name,
             target_parameter_name="exec_in",
-            initial_setup=True,
-        )
-    )
-    GriptapeNodes.handle_request(
-        CreateConnectionRequest(
-            source_node_name=node5_name,
-            source_parameter_name="extracted_path",
-            target_node_name=node7_name,
-            target_parameter_name="dataset_folder",
-            initial_setup=True,
-        )
-    )
-    GriptapeNodes.handle_request(
-        CreateConnectionRequest(
-            source_node_name=node7_name,
-            source_parameter_name="dataset_config_path",
-            target_node_name=node8_name,
-            target_parameter_name="dataset_config_path",
-            initial_setup=True,
-        )
-    )
-    GriptapeNodes.handle_request(
-        CreateConnectionRequest(
-            source_node_name=node6_name,
-            source_parameter_name="output_success_value",
-            target_node_name=node5_name,
-            target_parameter_name="extract_location",
-            initial_setup=True,
-        )
-    )
-    GriptapeNodes.handle_request(
-        CreateConnectionRequest(
-            source_node_name=node5_name,
-            source_parameter_name="extracted_path",
-            target_node_name=node8_name,
-            target_parameter_name="output_dir",
-            initial_setup=True,
-        )
-    )
-    GriptapeNodes.handle_request(
-        CreateConnectionRequest(
-            source_node_name=node5_name,
-            source_parameter_name="extracted_path",
-            target_node_name=node7_name,
-            target_parameter_name="dataset_folder",
-            initial_setup=True,
-        )
-    )
-    GriptapeNodes.handle_request(
-        CreateConnectionRequest(
-            source_node_name=node7_name,
-            source_parameter_name="dataset_config_path",
-            target_node_name=node8_name,
-            target_parameter_name="dataset_config_path",
-            initial_setup=True,
-        )
-    )
-    GriptapeNodes.handle_request(
-        CreateConnectionRequest(
-            source_node_name=node6_name,
-            source_parameter_name="output_success_value",
-            target_node_name=node5_name,
-            target_parameter_name="extract_location",
-            initial_setup=True,
-        )
-    )
-    GriptapeNodes.handle_request(
-        CreateConnectionRequest(
-            source_node_name=node5_name,
-            source_parameter_name="extracted_path",
-            target_node_name=node8_name,
-            target_parameter_name="output_dir",
             initial_setup=True,
         )
     )

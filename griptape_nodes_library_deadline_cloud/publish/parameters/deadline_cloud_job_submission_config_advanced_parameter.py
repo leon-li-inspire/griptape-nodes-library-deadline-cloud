@@ -140,7 +140,7 @@ class DeadlineCloudJobSubmissionConfigAdvancedParameter(BaseDeadlineCloud):
                 name="conda_packages",
                 input_types=["str"],
                 type="str",
-                default_value="python=3.12",
+                default_value="python=3.12 git",
                 output_type="str",
                 tooltip="Conda packages install job.",
                 allowed_modes=allowed_modes,

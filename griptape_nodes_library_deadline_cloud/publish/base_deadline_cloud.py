@@ -76,11 +76,11 @@ class BaseDeadlineCloud:
     def _get_config_value(cls, service: str, value: str, default: Any | None = None) -> Any:
         """Retrieves a configuration value from the ConfigManager."""
         config_value = GriptapeNodes.ConfigManager().get_config_value(f"{service}.{value}")
-        if not config_value and default is None:
+        if config_value is None and default is None:
             details = f"Failed to get configuration value '{value}' for service '{service}'."
             logger.error(details)
             raise ValueError(details)
-        return config_value or default
+        return config_value if config_value is not None else default
 
     @classmethod
     def _get_secret(cls, secret: str) -> str:

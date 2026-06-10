@@ -108,7 +108,7 @@ class DeadlineCloudMultiTaskJobTemplateGenerator:
                 "name": "CondaPackages",
                 "type": "STRING",
                 "description": "Conda packages install job",
-                "default": "python=3.12",
+                "default": "python=3.12 git",
             }
         )
 
@@ -124,6 +124,18 @@ python -m pip install --upgrade pip wheel setuptools
 echo 'Installing dependencies...'
 pip install -r {{Param.LocationToRemap}}/assets/requirements.txt
 mkdir -p {{Param.LocationToRemap}}/output
+
+# Create .venv symlinks in libraries so library code that expects its own
+# venv (e.g. _get_library_env_python) finds a working Python with all deps.
+SESSION_PYTHON=$(which python)
+for lib_dir in {{Param.LocationToRemap}}/assets/libraries/*/; do
+    if [ -f "${lib_dir}griptape-nodes-library.json" ] || [ -f "${lib_dir}griptape-nodes-library-cuda129.json" ]; then
+        mkdir -p "${lib_dir}.venv/bin"
+        ln -sf "$SESSION_PYTHON" "${lib_dir}.venv/bin/python"
+        echo "Created .venv symlink in ${lib_dir}"
+    fi
+done
+
 echo 'Virtual environment setup complete.'
 """
 
@@ -238,7 +250,12 @@ if (job_assets_dir / ".env").exists():
     load_dotenv(str(job_assets_dir / ".env"))
 
 # Set HuggingFace hub cache directory for model cache, and print
-os.environ["HF_HUB_CACHE"] = str(Path(models_location_to_remap))
+_hf_cache = Path(models_location_to_remap)
+if not _hf_cache.exists() or not os.access(str(_hf_cache), os.W_OK):
+    _hf_cache = Path(location_to_remap) / "hf_cache"
+    _hf_cache.mkdir(parents=True, exist_ok=True)
+    logger.info("Models path not writable, using fallback: %s", _hf_cache)
+os.environ["HF_HUB_CACHE"] = str(_hf_cache)
 os.environ["GTN_CONFIG_WORKSPACE_DIRECTORY"] = str(output_dir)
 logger.info(f"HuggingFace model cache directory set to: {{os.environ['HF_HUB_CACHE']}}")
 logger.info(f"Griptape workspace directory set to: {{os.environ['GTN_CONFIG_WORKSPACE_DIRECTORY']}}")

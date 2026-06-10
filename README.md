@@ -73,3 +73,22 @@ This method is useful if you have a workflow that would benefit from offloading 
 ### Templates
 
 For some examples on using the AWS Deadline Cloud Library, check out the [templates](./griptape_nodes_library_deadline_cloud/workflows/templates)!
+
+#### Train LoRA Template Prerequisites
+
+The `deadline_cloud_train_lora` template has additional requirements beyond the standard Deadline Cloud setup:
+
+**LoRA Training Library setup:**
+
+1. Install the [Griptape Nodes LoRA Training Library](https://github.com/griptape-ai/griptape-nodes-lora-training-library) in your engine, registered with the `griptape-nodes-library-cuda129.json` file for Deadline Cloud GPU compatibility. See the [LoRA Training Library README](https://github.com/griptape-ai/griptape-nodes-lora-training-library#readme) for installation instructions.
+
+**FLUX.2 model:**
+
+The FLUX.2 Klein model is downloaded directly from HuggingFace by the worker during training. The training script calls `from_pretrained("black-forest-labs/FLUX.2-klein-base-4B")` which downloads the model on first use. No local model download or upload as job attachment is required.
+
+**Worker requirements:**
+
+1. Your Deadline Cloud queue must have a worker fleet with **GPU-equipped instances** (the template requests 1-2 GPUs).
+   **Why:** LoRA training uses mixed-precision (bf16) and requires CUDA-capable GPUs.
+
+

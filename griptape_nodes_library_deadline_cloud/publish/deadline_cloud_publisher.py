@@ -999,6 +999,44 @@ class DeadlineCloudPublisher(BaseDeadlineCloud):
         for key, val in env_file_dict.items():
             set_key(env_file_path, key, str(val))
 
+    def _write_deps_from_sibling_json(self, library_name: str, req_file: Any) -> None:
+        """Look for a sibling library JSON with pip_dependencies.
+
+        When a library is registered with a no-deps variant, look for the full
+        version (e.g. griptape-nodes-library.json or *-cuda*.json) in the same
+        directory to get the actual pip_dependencies for remote execution.
+        """
+        library = GriptapeNodes.LibraryManager().get_library_info_by_library_name(library_name)
+        if library is None or not library.library_path.endswith(".json"):
+            return
+
+        library_json_path = Path(library.library_path).resolve()
+        library_dir = library_json_path.parent
+
+        candidates = sorted(library_dir.glob("griptape-nodes-library*.json"))
+        for candidate in candidates:
+            if candidate == library_json_path:
+                continue
+            if "no-deps" in candidate.name:
+                continue
+            try:
+                with candidate.open() as f:
+                    data = json.load(f)
+                deps = data.get("metadata", {}).get("dependencies", {})
+                pip_deps = deps.get("pip_dependencies", [])
+                if pip_deps:
+                    pip_flags = deps.get("pip_install_flags", [])
+                    if pip_flags:
+                        req_file.write(f"{' '.join(pip_flags)}\n")
+                    for dep in pip_deps:
+                        if dep.startswith("-e"):
+                            continue
+                        req_file.write(f"{dep}\n")
+                    logger.info("Using pip_dependencies from '%s' for library '%s'", candidate.name, library_name)
+                    return
+            except Exception:  # noqa: BLE001
+                continue
+
     def _get_engine_version_for_workflow(self, workflow: Workflow) -> str:
         # Get engine version for dependencies
         engine_version_request = GetEngineVersionRequest()
@@ -1102,6 +1140,25 @@ class DeadlineCloudPublisher(BaseDeadlineCloud):
                 req_file.write(
                     f"griptape-nodes @ git+https://github.com/griptape-ai/griptape-nodes.git@{engine_version}\n"
                 )
+                # Libraries may be registered locally with a no-deps JSON variant
+                # (e.g. griptape-nodes-library-no-deps.json) to avoid installing heavy
+                # GPU dependencies on machines without NVIDIA hardware. When publishing
+                # to Deadline Cloud, the worker still needs those deps, so we fall back
+                # to a sibling JSON that declares the full pip_dependencies (e.g.
+                # griptape-nodes-library-cuda129.json in the same directory).
+                for library_ref in workflow.metadata.node_libraries_referenced:
+                    lib = LibraryRegistry.get_library(library_ref.library_name)
+                    library_data = lib.get_library_data()
+                    deps = library_data.metadata.dependencies
+                    if deps and deps.pip_dependencies:
+                        if deps.pip_install_flags:
+                            req_file.write(f"{' '.join(deps.pip_install_flags)}\n")
+                        for dep in deps.pip_dependencies:
+                            if dep.startswith("-e"):
+                                continue
+                            req_file.write(f"{dep}\n")
+                    else:
+                        self._write_deps_from_sibling_json(library_ref.library_name, req_file)
 
             # 6. Gather and copy static file dependencies from FileSelector nodes
             file_selector_nodes = self._gather_file_selector_nodes()

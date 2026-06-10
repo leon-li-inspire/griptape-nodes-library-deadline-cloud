@@ -630,6 +630,13 @@ class DeadlineCloudPublishedWorkflow(SuccessFailureNode, BaseDeadlineCloud):
                             self.parameter_output_values[map_param_name] = param_value
                             logger.info("Set output parameter %s = %s", map_param_name, param_value)
 
+    @staticmethod
+    def _ensure_conda_git(conda_packages: str) -> str:
+        """Ensure git is included in conda packages (needed for pip git+ installs)."""
+        if "git" not in conda_packages.split():
+            conda_packages = f"{conda_packages} git"
+        return conda_packages
+
     def _reconcile_job_template(self, job_template: dict[str, Any]) -> dict[str, Any]:
         """Reconcile the job template with the parameters."""
         job_name = self.get_parameter_value("job_name")
@@ -842,7 +849,7 @@ class DeadlineCloudPublishedWorkflow(SuccessFailureNode, BaseDeadlineCloud):
                 "ModelsLocationToRemap": {"path": models_dir_path},
                 "OutputDir": {"string": output_dir_subdir},
                 "CondaChannels": {"string": self.get_parameter_value("conda_channels")},
-                "CondaPackages": {"string": self.get_parameter_value("conda_packages")},
+                "CondaPackages": {"string": self._ensure_conda_git(self.get_parameter_value("conda_packages"))},
             }
 
             job_template = self._reconcile_job_template(job_template)
