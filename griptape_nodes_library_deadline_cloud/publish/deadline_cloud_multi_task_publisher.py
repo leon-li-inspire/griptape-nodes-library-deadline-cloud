@@ -861,9 +861,18 @@ class DeadlineCloudMultiTaskPublisher(DeadlineCloudPublisher):
                         # Get the suffix after the output segment base
                         suffix = val[segment_idx + len(output_segment) :]
                         return local_output_path + suffix
+                # Strip worker session prefix from paths that were remapped by job attachments.
+                # Worker paths look like: /sessions/session-.../assetroot-.../<original_path>
+                # Restore to the original local path to prevent the editor from storing worker paths.
+                if val.startswith("/sessions/session-"):
+                    import re as _re
+
+                    match = _re.match(r"/sessions/session-[^/]+/assetroot-[^/]+(/.*)", val)
+                    if match:
+                        return match.group(1)
                 return val
             if isinstance(val, dict):
-                return {k: translate_value(v) for k, v in val.items()}
+                return {translate_value(k): translate_value(v) for k, v in val.items()}
             if isinstance(val, list):
                 return [translate_value(item) for item in val]
             return val

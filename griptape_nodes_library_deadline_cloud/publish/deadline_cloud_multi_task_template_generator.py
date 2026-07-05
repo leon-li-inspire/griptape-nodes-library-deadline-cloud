@@ -129,10 +129,9 @@ mkdir -p {{Param.LocationToRemap}}/output
 # venv (e.g. _get_library_env_python) finds a working Python with all deps.
 SESSION_PYTHON=$(which python)
 for lib_dir in {{Param.LocationToRemap}}/assets/libraries/*/; do
-    if [ -f "${lib_dir}griptape-nodes-library.json" ] || [ -f "${lib_dir}griptape-nodes-library-cuda129.json" ]; then
-        mkdir -p "${lib_dir}.venv/bin"
-        ln -sf "$SESSION_PYTHON" "${lib_dir}.venv/bin/python"
-        echo "Created .venv symlink in ${lib_dir}"
+    if ls "${lib_dir}"griptape-nodes-library*.json 1>/dev/null 2>&1; then
+        "$SESSION_PYTHON" -m venv --system-site-packages "${lib_dir}.venv"
+        echo "Created .venv in ${lib_dir}"
     fi
 done
 

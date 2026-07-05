@@ -1013,7 +1013,7 @@ class DeadlineCloudPublisher(BaseDeadlineCloud):
         for key, val in env_file_dict.items():
             set_key(env_file_path, key, str(val))
 
-    def _write_deps_from_sibling_json(self, library_name: str, req_file: Any) -> None:
+    def _write_deps_from_sibling_json(self, library_name: str, req_file: Any) -> None:  # noqa: C901
         """Look for a sibling library JSON with pip_dependencies.
 
         When a library is registered with a no-deps variant, look for the full
@@ -1041,7 +1041,26 @@ class DeadlineCloudPublisher(BaseDeadlineCloud):
                 if pip_deps:
                     pip_flags = deps.get("pip_install_flags", [])
                     if pip_flags:
-                        req_file.write(f"{' '.join(pip_flags)}\n")
+                        has_torch_backend = any("--torch-backend" in f for f in pip_flags)
+                        pip_compatible_flags = [
+                            f
+                            for f in pip_flags
+                            if f.startswith(
+                                (
+                                    "--extra-index-url",
+                                    "--find-links",
+                                    "--index-url",
+                                    "--no-deps",
+                                    "--prefer-binary",
+                                    "https://",
+                                )
+                            )
+                            or f == "--pre"
+                        ]
+                        if has_torch_backend and not any("pytorch.org" in f for f in pip_compatible_flags):
+                            pip_compatible_flags.extend(["--extra-index-url", "https://download.pytorch.org/whl/cu129"])
+                        if pip_compatible_flags:
+                            req_file.write(f"{' '.join(pip_compatible_flags)}\n")
                     for dep in pip_deps:
                         if dep.startswith("-e"):
                             continue
@@ -1170,7 +1189,28 @@ class DeadlineCloudPublisher(BaseDeadlineCloud):
                     deps = library_data.metadata.dependencies
                     if deps and deps.pip_dependencies:
                         if deps.pip_install_flags:
-                            req_file.write(f"{' '.join(deps.pip_install_flags)}\n")
+                            has_torch_backend = any("--torch-backend" in f for f in deps.pip_install_flags)
+                            pip_compatible_flags = [
+                                f
+                                for f in deps.pip_install_flags
+                                if f.startswith(
+                                    (
+                                        "--extra-index-url",
+                                        "--find-links",
+                                        "--index-url",
+                                        "--no-deps",
+                                        "--prefer-binary",
+                                        "https://",
+                                    )
+                                )
+                                or f == "--pre"
+                            ]
+                            if has_torch_backend and not any("pytorch.org" in f for f in pip_compatible_flags):
+                                pip_compatible_flags.extend(
+                                    ["--extra-index-url", "https://download.pytorch.org/whl/cu129"]
+                                )
+                            if pip_compatible_flags:
+                                req_file.write(f"{' '.join(pip_compatible_flags)}\n")
                         for dep in deps.pip_dependencies:
                             if dep.startswith("-e"):
                                 continue
@@ -1183,12 +1223,20 @@ class DeadlineCloudPublisher(BaseDeadlineCloud):
             if file_selector_nodes:
                 self._resolve_and_copy_static_files(file_selector_nodes, assets_dir)
 
+            # 6b. Collect attachment_input_paths for PATH parameter registration
+            start_flow_input = self._create_run_input.get("Deadline Cloud Start Flow", {})
+            attachment_input_file_paths = start_flow_input.get("attachment_input_paths", [])
+
             # 7. Write Deadline-specific project template (always, even without FileSelector nodes)
             self._write_deadline_project_template(assets_dir)
 
             # 8. Generate Job Template
             self._job_template = DeadlineCloudJobTemplateGenerator.generate_job_template(
-                job_bundle_dir, workflow_name, library_paths, pickle_control_flow_result=self.pickle_control_flow_result
+                job_bundle_dir,
+                workflow_name,
+                library_paths,
+                pickle_control_flow_result=self.pickle_control_flow_result,
+                attachment_input_file_paths=attachment_input_file_paths,
             )
 
             logger.info("Job bundle created at: %s", job_bundle_dir)

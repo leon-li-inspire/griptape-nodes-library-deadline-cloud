@@ -3,12 +3,10 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
+from pathlib import Path
+from typing import Any
 
 import yaml
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 logger = logging.getLogger("job_template_generator")
 
@@ -18,9 +16,15 @@ class DeadlineCloudJobTemplateGenerator:
 
     @staticmethod
     def generate_job_template(
-        job_bundle_dir: Path, workflow_name: str, library_paths: list[str], *, pickle_control_flow_result: bool = False
+        job_bundle_dir: Path,
+        workflow_name: str,
+        library_paths: list[str],
+        *,
+        pickle_control_flow_result: bool = False,
+        attachment_input_file_paths: list[str] | None = None,
     ) -> dict[str, Any]:
         """Generate Open Job Description template for the workflow."""
+        attachment_input_file_paths = attachment_input_file_paths or []
         parameter_definitions: list[dict[str, Any]] = []
 
         parameter_definitions.append(
@@ -85,27 +89,45 @@ class DeadlineCloudJobTemplateGenerator:
             }
         )
 
+        # Add PATH parameters for attachment input files so Deadline Cloud
+        # natively remaps their paths on the worker.
+        for i, file_path in enumerate(attachment_input_file_paths):
+            parameter_definitions.append(
+                {
+                    "name": f"AttachmentInput_{i}",
+                    "type": "PATH",
+                    "objectType": "FILE",
+                    "dataFlow": "IN",
+                    "description": f"Attachment input file: {Path(file_path).name}",
+                    "default": file_path,
+                }
+            )
+
         # Generate Python execution script
         python_script = DeadlineCloudJobTemplateGenerator._generate_python_execution_script(
-            library_paths, pickle_control_flow_result=pickle_control_flow_result
+            library_paths,
+            pickle_control_flow_result=pickle_control_flow_result,
         )
 
         venv_script = """#!/bin/env bash
 set -e
 echo 'Setting up Python virtual environment...'
+python -m ensurepip --upgrade 2>/dev/null || true
 python -m pip install --upgrade pip wheel setuptools
 echo 'Installing dependencies...'
+export TMPDIR={{Param.LocationToRemap}}/pip_tmp
+mkdir -p "$TMPDIR"
 pip install -r {{Param.LocationToRemap}}/assets/requirements.txt
+rm -rf "$TMPDIR"
 mkdir -p {{Param.LocationToRemap}}/output
 
 # Create .venv symlinks in libraries so library code that expects its own
 # venv (e.g. _get_library_env_python) finds a working Python with all deps.
 SESSION_PYTHON=$(which python)
 for lib_dir in {{Param.LocationToRemap}}/assets/libraries/*/; do
-    if [ -f "${lib_dir}griptape-nodes-library.json" ] || [ -f "${lib_dir}griptape-nodes-library-cuda129.json" ]; then
-        mkdir -p "${lib_dir}.venv/bin"
-        ln -sf "$SESSION_PYTHON" "${lib_dir}.venv/bin/python"
-        echo "Created .venv symlink in ${lib_dir}"
+    if ls "${lib_dir}"griptape-nodes-library*.json 1>/dev/null 2>&1; then
+        "$SESSION_PYTHON" -m venv --system-site-packages "${lib_dir}.venv"
+        echo "Created .venv in ${lib_dir}"
     fi
 done
 
@@ -143,6 +165,14 @@ echo 'Virtual environment setup complete.'
                                     "{{Task.File.Run}}",
                                     "--input-file",
                                     "{{Param.InputFile}}",
+                                    *[
+                                        arg
+                                        for i, original_path in enumerate(attachment_input_file_paths)
+                                        for arg in (
+                                            "--attachment-path",
+                                            f"{original_path}::{{{{Param.AttachmentInput_{i}}}}}",
+                                        )
+                                    ],
                                 ],
                             }
                         },
@@ -161,7 +191,11 @@ echo 'Virtual environment setup complete.'
         return job_template
 
     @staticmethod
-    def _generate_python_execution_script(library_paths: list[str], *, pickle_control_flow_result: bool = False) -> str:
+    def _generate_python_execution_script(
+        library_paths: list[str],
+        *,
+        pickle_control_flow_result: bool = False,
+    ) -> str:
         """Generate the Python script that will execute the Griptape workflow."""
         library_paths_str = ", ".join(repr(path) for path in library_paths)
 
@@ -262,7 +296,6 @@ _set_config(LIBRARIES)
 
 from deadline_cloud_workflow_executor import DeadlineCloudWorkflowExecutor
 from griptape_nodes.drivers.storage.storage_backend import StorageBackend
-from workflow import execute_workflow  # type: ignore[attr-defined]
 
 if __name__ == "__main__":
 
@@ -278,10 +311,44 @@ if __name__ == "__main__":
         default={pickle_control_flow_result},
         help="Whether to pickle the control flow result",
     )
+    parser.add_argument(
+        "--attachment-path",
+        action="append",
+        default=[],
+        help="Path mapping in format 'original_path::worker_path'",
+    )
 
     args = parser.parse_args()
     input_file_path = args.input_file
     pickle_result = args.pickle_control_flow_result
+
+    # Monkey-patch pickle.loads to remap attachment paths as values are unpickled.
+    # Uses exact match (val == orig) to avoid double-replacement issues.
+    _attachment_path_map = {{}}
+    for mapping in args.attachment_path:
+        original, resolved = mapping.split("::", 1)
+        _attachment_path_map[original] = resolved
+        logger.info("Attachment path mapping: %s -> %s", original, resolved)
+
+    if _attachment_path_map:
+        import pickle
+        _original_pickle_loads = pickle.loads
+        def _patched_pickle_loads(data, **kwargs):
+            result = _original_pickle_loads(data, **kwargs)
+            def _remap(val):
+                if isinstance(val, str):
+                    if val in _attachment_path_map:
+                        return _attachment_path_map[val]
+                    return val
+                elif isinstance(val, list):
+                    return [_remap(v) for v in val]
+                elif isinstance(val, dict):
+                    return {{_remap(k): _remap(v) for k, v in val.items()}}
+                return val
+            return _remap(result)
+        pickle.loads = _patched_pickle_loads
+
+    from workflow import execute_workflow  # type: ignore[attr-defined]
 
     try:
         if input_file_path:
